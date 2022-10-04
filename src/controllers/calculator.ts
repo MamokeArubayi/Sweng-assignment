@@ -47,67 +47,91 @@ let utilityFunctions = {
         return true;
     },
     eval: (str: string) => {
-        // Assumes that the expression is valid
-        // Parses the expression and returns the result
-        // return a number
+        let index = 0;
+        let sumStack = [0];
+        let stackIndex = 0;
+        let operatorStack = ['+']
+        let validNums = ['0','1','2','3','4','5','6','7','8','9'];
 
-        // split string into array of characters
-        let arr = str.split('');
-        // create array to hold numbers
-        let numbers = [];
-        // create array to hold operators
-        let operators = [];
-        // create variable to hold current number
-        let currentNumber = '';
-        // loop through array of characters
-        for (let i = 0; i < arr.length; i++) {
-            // if character is a number, add to current number
-            if (!isNaN(parseInt(arr[i]))) {
-                currentNumber += arr[i];
+        while (index < str.length) {
+            let char = str.charAt(index);
+            if (char ==='+'){
+                operatorStack.push('+');
+                index++;
             }
-            // if character is an operator, add current number to numbers array and add operator to operators array
-            if (arr[i] === '+' || arr[i] === '-' || arr[i] === '*' || arr[i] === '/') {
-                numbers.push(parseInt(currentNumber));
-                operators.push(arr[i]);
-                currentNumber = '';
+            else if (char ==='-'){
+                operatorStack.push('-');
+                index++;
             }
-        }
-        // add last number to numbers array
-        numbers.push(parseInt(currentNumber));
-        // loop through operators array
-        for (let i = 0; i < operators.length; i++) {
-            // if operator is multiplication or division, evaluate the expression and replace the two numbers with the result
-            if (operators[i] === '*' || operators[i] === '/') {
-                let result = 0;
-                if (operators[i] === '*') {
-                    result = numbers[i] * numbers[i + 1];
-                }
-                if (operators[i] === '/') {
-                    result = numbers[i] / numbers[i + 1];
-                }
-                numbers.splice(i, 2, result);
-                operators.splice(i, 1);
-                i--;
+            else if (char ==='*'){
+                operatorStack.push('*');
+                index++;
             }
-        }
-        // loop through operators array
-        for (let i = 0; i < operators.length; i++) {
-            // if operator is addition or subtraction, evaluate the expression and replace the two numbers with the result
-            if (operators[i] === '+' || operators[i] === '-') {
-                let result = 0;
-                if (operators[i] === '+') {
-                    result = numbers[i] + numbers[i + 1];
-                }
-                if (operators[i] === '-') {
-                    result = numbers[i] - numbers[i + 1];
-                }
-                numbers.splice(i, 2, result);
-                operators.splice(i, 1);
-                i--;
+            else if (char ==='/'){
+                operatorStack.push('/');
+                index++;
             }
-        }
-        // return the result
-        return numbers[0];
+            else if (char ===' '){
+                index++;
+            }
+            else if (validNums.includes(char)){
+                let numVals = [];
+                while (validNums.includes(char)){
+                    numVals.push(char);
+                    index++;
+                    char = str.charAt(index);
+                }
+                let num = parseInt(numVals.join(''), 10);
+
+                if (operatorStack[stackIndex] === '+'){
+                    sumStack[stackIndex] += num;
+                }
+                else if (operatorStack[stackIndex] === '-'){
+                    sumStack[stackIndex] -= num;
+                }
+                else if (operatorStack[stackIndex] === '*'){
+                    sumStack[stackIndex] *= num;
+                }
+                else if (operatorStack[stackIndex] === '/'){
+                    sumStack[stackIndex] /= num;
+                }
+                else {
+                    sumStack[stackIndex] = num;
+                } 
+            }
+            else if (char === '('){
+                stackIndex++;
+                sumStack[stackIndex] = 0;
+                operatorStack[stackIndex] = '+';
+                index++;
+            }
+            else if (char === ')'){
+                let returnNum = sumStack[stackIndex];
+                sumStack[stackIndex] = undefined;
+                operatorStack[stackIndex] = undefined;
+                stackIndex--;
+                if (operatorStack[stackIndex] === '-'){
+                    sumStack[stackIndex] -= returnNum;
+                }
+                else if (operatorStack[stackIndex] === '+'){
+                    sumStack[stackIndex] += returnNum;
+                }
+                else if (operatorStack[stackIndex] === '*'){
+                    sumStack[stackIndex] *= returnNum;
+                }
+                else if (operatorStack[stackIndex] === '/'){
+                    sumStack[stackIndex] /= returnNum;
+                }
+                else {
+                    sumStack[stackIndex] = sumStack[stackIndex] + returnNum;
+                }
+                index++;
+            }
+            else {
+                index++;
+            }
+        }    
+        return sumStack[0];   
     }
 
 }
