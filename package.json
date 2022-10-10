@@ -1,0 +1,60 @@
+{
+  "name": "sweng-assignment",
+  "version": "0.0.1",
+  "description": "Calculator Application for software engineering application",
+  "main": "server.js",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rimraf dist && rimraf reports",
+    "dev": "nodemon",
+    "test": "cross-env NODE_ENV=test mocha --reporter spec --require ts-node/register test/**/*.spec.ts"
+  },
+  "directories": {
+    "test": "test",
+    "src": "src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MamokeArubayi/Sweng-assignment.git"
+  },
+  "keywords": [
+    "Software",
+    "Engineering",
+    "Calculator",
+    "Tests",
+    "Typescript"
+  ],
+  "authors": [
+    "Mamoke Arubayi",
+    "Neil Shevlin"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MamokeArubayi/Sweng-assignment/issues"
+  },
+  "homepage": "https://github.com/MamokeArubayi/Sweng-assignment#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "express-winston": "^4.2.0",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/chai": "^4.3.3",
+    "@types/chai-http": "^4.2.0",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.14",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^10.17.60",
+    "chai": "^4.3.6",
+    "cross-env": "^7.0.3",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
+}
