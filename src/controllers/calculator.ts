@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
-
+import { APILogger } from '../utils/logger';
 let utilityFunctions = {
     
     validExpression: (str: string) => {
@@ -14,42 +14,47 @@ let utilityFunctions = {
         let arr = str.split('');
         // check if first character is a number
         if (isNaN(parseInt(arr[0]))) {
+            APILogger.logger.info('First char is not a number ' + arr[0]);
             return false;
         }
         // check if last character is a number
         if (isNaN(parseInt(arr[arr.length - 1]))) {
+            APILogger.logger.info('Last char is not a number ' + arr[arr.length - 1]);
             return false;
         }
         
         for (let i = 0; i < arr.length; i++) {
             // check if string contains any characters other than numbers, operators, and spaces
             if (isNaN(parseInt(arr[i])) && arr[i] !== '+' && arr[i] !== '-' && arr[i] !== '*' && arr[i] !== '/' && arr[i] !== ' ') {
+                APILogger.logger.info('Invalid character ' + arr[i]);
                 return false;
             }
             // check if string contains two operators in a row
             if (isNaN(parseInt(arr[i])) && isNaN(parseInt(arr[i + 1]))) {
-                return false;
-            }
-            // check if string contains two numbers in a row
-            if (!isNaN(parseInt(arr[i])) && !isNaN(parseInt(arr[i + 1]))) {
+                APILogger.logger.info('Two operators in a row ' + arr[i] + arr[i + 1]);
                 return false;
             }
             if (arr[i] === ' ' && arr[i + 1] === ' ') {
+                APILogger.logger.info('Two spaces in a row ' + arr[i] + arr[i + 1]);
                 return false;
             }
 
         }
         // check if string contains an operator at the beginning or end
         if (arr[0] === '+' || arr[0] === '-' || arr[0] === '*' || arr[0] === '/' || arr[arr.length - 1] === '+' || arr[arr.length - 1] === '-' || arr[arr.length - 1] === '*' || arr[arr.length - 1] === '/') {
+            APILogger.logger.info('Operator at beginning or end ' + arr[0] + arr[arr.length - 1]);
             return false;
         }
         // check if string contains a space at the beginning or end
         if (arr[0] === ' ' || arr[arr.length - 1] === ' ') {
+            APILogger.logger.info('Space at beginning or end ' + arr[0] + arr[arr.length - 1]);
             return false;
         }
+        APILogger.logger.info(`[GET] /calculator: ${str} is a valid expression`);
         // if all checks pass, return true
         return true;
     } catch (err) {
+        APILogger.logger.info(`[GET][/calculate]: Failed with error: ${err}`);
         return false;
     }
     },
