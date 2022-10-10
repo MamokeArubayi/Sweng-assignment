@@ -1,7 +1,11 @@
 import {NextFunction, Request, Response} from 'express';
 
 let utilityFunctions = {
+    
     validExpression: (str: string) => {
+        try{
+
+        
         // string can contain numbers, operators, and spaces
         // determine if string is a valid expression
         // return true or false
@@ -45,6 +49,9 @@ let utilityFunctions = {
         }
         // if all checks pass, return true
         return true;
+    } catch (err) {
+        return false;
+    }
     },
     eval: (str: string) => {
         // Assumes that the expression is valid
@@ -125,10 +132,11 @@ export let calculate = (req: Request, res: Response, next: NextFunction) => {
             res.status(200).send({ result: result });
         } else {
             // if invalid, return error
-            res.status(400).send({ error: 'Invalid expression' });
+            res.status(404).send({ error: 'Invalid expression' });
         }
     }
     catch (e) {
+        console.log(e);
         return res.status(500).send({error: e.message});
     }
 };
