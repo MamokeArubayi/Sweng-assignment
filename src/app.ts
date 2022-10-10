@@ -3,6 +3,7 @@ import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
 import * as express from 'express';
 
+import { APILogger } from './utils/logger';
 import { CalculatorRoute } from './routes/calculator';
 import { IndexRoute } from './routes/index';
 
@@ -27,10 +28,6 @@ class App {
             transports: [
                 new winston.transports.Console()
             ],
-            format: winston.format.combine(
-                winston.format.colorize(),
-                winston.format.json()
-            )
         }));
         this.app.use(express.json());
     }
